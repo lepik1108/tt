@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.28.0">
+      <projectUrl>https://github.com/lepik1108/tt/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.5.1">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/lepik1108/tt/</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>pip3.5 install --user pymongo
+pip3.5 install --user selenium</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>docker pull selenium/standalone-chrome
+docker pull mongo</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker run -d -p 4444:4444 selenium/standalone-chrome
+docker run -d -p 27017:27017 -v ~/:/db mongo</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>python3.5 tt.py</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>export TT_MAIL_RECEIVER=lepik1108@gmail.com
+</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>python3.5 send_mail.py</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <ruby-proxy-object>
+      <ruby-object ruby-class="Jenkins::Tasks::BuildWrapperProxy" pluginid="pyenv">
+        <object ruby-class="PyenvWrapper" pluginid="pyenv">
+          <pyenv__repository pluginid="pyenv" ruby-class="String">https://github.com/yyuu/pyenv.git</pyenv__repository>
+          <version pluginid="pyenv" ruby-class="String">3.5.3</version>
+          <pyenv__revision pluginid="pyenv" ruby-class="String">master</pyenv__revision>
+          <pyenv__root pluginid="pyenv" ruby-class="String">$HOME/.pyenv</pyenv__root>
+          <ignore__local__version ruby-class="FalseClass" pluginid="pyenv"/>
+          <pip__list pluginid="pyenv" ruby-class="String">tox</pip__list>
+        </object>
+        <pluginid pluginid="pyenv" ruby-class="String">pyenv</pluginid>
+      </ruby-object>
+    </ruby-proxy-object>
+  </buildWrappers>
+</project>
