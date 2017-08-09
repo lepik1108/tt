@@ -87,7 +87,7 @@ if __name__ == "__main__":
 	driver.find_element_by_xpath('//a[contains(text(), "' + category + '") and @class="novisited"]').click()
 	
 	WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.LINK_TEXT,sub_category)))
-	driver.find_element_by_link_text().click()
+	driver.find_element_by_link_text(sub_category).click()
 	
 	WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.LINK_TEXT,sub_sub_category)))
 	driver.find_element_by_link_text(sub_sub_category).click()
