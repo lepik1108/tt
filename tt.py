@@ -79,10 +79,17 @@ if __name__ == "__main__":
 	##search = driver.find_element_by_class_name("rz-header-search-input-text passive")
 	search.send_keys(category)
 	search.send_keys(Keys.ENTER)
-
+	
+	WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,'//a[contains(text(), "' + category + '") and @class="m-cat-l-i-title-link novisited"]')))
 	driver.find_element_by_xpath('//a[contains(text(), "' + category + '") and @class="m-cat-l-i-title-link novisited"]').click()
+	
+	WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,'//a[contains(text(), "' + category + '") and @class="novisited"]')))
 	driver.find_element_by_xpath('//a[contains(text(), "' + category + '") and @class="novisited"]').click()
-	driver.find_element_by_link_text(sub_category).click()
+	
+	WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.LINK_TEXT,sub_category)))
+	driver.find_element_by_link_text().click()
+	
+	WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.LINK_TEXT,sub_sub_category)))
 	driver.find_element_by_link_text(sub_sub_category).click()
 	#driver.execute_script("window.stop();") 
 	#driver.find_element_by_tag_name("body").send_keys(Keys.ESCAPE)
